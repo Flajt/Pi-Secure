@@ -8,4 +8,4 @@ the person how want to cross it in the databank the camrea takes a photo and sen
 The programm should include a user inteface (to upload pictures and so on) but not a GUI.
 I hope you understood what I mean.
 
-I am working at the user login the next.
+I am working at the user login.
