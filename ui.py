@@ -1,11 +1,12 @@
 ok?=False
 import sys
-
+from passlib.hash import pbkdf2_sha256
 
 def login():
     while x!=3:
         pass=input(Enter your Password: )
-        if pass==pasw:
+        right=pbkdf2_sha256.verify(pass, hash)
+        if right==True:
             print("Welcome back"+user)
             main()
         else:
@@ -16,7 +17,7 @@ def login():
             sys.exit()
 
 try:
-  passw=open("pass.pckl","r")               #this is the part were everything Load
+  hash=open("pass.pckl","r")               #this is the part were everything Load dont know if that is working
   user=open("fileObejct.pckl","r")
   mail=open("mail.pckl","r")
   ok?=True
@@ -25,18 +26,20 @@ try:
 import pickle               #add al important infos
 a=input("Create a Username: ")
 print("Welcome"+a)
-fileObject = open("username.pckl",'wb')
+fileObject = open("username.pckl",'w')
 save=pickle.dump(a,fileObject)
 while password1!=password2:
     password1=input("Enter your Password: ")
     password2=input("Confirm your Password: ")
-    mail=input("Enter your Mail adress:")
-    password=open("pass.pckl","wb")
-    mail2=open("mail.pckl","wb")
-    save2=pickle.dump(password,password2)
-    save3=pickle.dump(mail,mail2)
-    fileObject.close()
-    password.close()
+
+hash = pbkdf2_sha256.encrypt(password2, rounds=200000, salt_size=16)
+mail=input("Enter your Mail adress:")
+password=open("pass.pckl","w")
+mail2=open("mail.pckl","w")
+save2=pickle.dump(password,hash)
+save3=pickle.dump(mail,mail2)
+fileObject.close()
+password.close()
 
 if ok?=True:            #check if all is working
     login()
