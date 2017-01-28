@@ -2,8 +2,12 @@ ok=False
 import sys
 import pickle
 from passlib.hash import pbkdf2_sha256
+global x
+x=0
+
 
 def login():
+    global x
     while x!=3:
         Pass=input("Enter your Password: ")
         right=pbkdf2_sha256.verify(Pass, hash)
@@ -23,17 +27,20 @@ try:
   mail=open("mail.pckl","r")
   ok=True
 
+except:
+    print("Loading Error")
+    login()
 
-  passw=open("pass.pckl","r")
-  user=open("fileObejct.pckl","r")
-  print(user)
-  while x!=3:
-      passw2=input("Enter your Password: ")
-      if pasw==passw2:
+    passw=open("pass.pckl","r")
+    user=open("fileObejct.pckl","r")
+    print(user)
+    while x!=3:
+        passw2=input("Enter your Password: ")
+        if pasw==passw2:
             main()
-      else:
+        else:
             x=x+1
-  if x==3:
+if x==3:
     print("That goes wrong try it later")
     import sys
     sys.exit()
@@ -55,7 +62,7 @@ if Pass_ok:
     save2=pickle.dump(password,hash)
 
 
-mail=input("Enter your Mail adress:")
+mail=input("Enter your Mail adress:")   #more important infos
 password=open("pass.pckl","w")
 mail2=open("mail.pckl","w")
 save2=pickle.dump(password,hash)
@@ -75,11 +82,11 @@ else:
 
 
 def main():         #main part with options
-    print(1:Add picture)
-    print(2:Delete picture)
-    print(3:Add mail Adress)
-    print(4:For help)
-    print(5:For logout)
+    print("1:Add picture")
+    print("2:Delete picture")
+    print("3:Add mail Adress")
+    print("4:For help")
+    print("5:For logout")
     wish=int(input("What do you want to do?: "))
     if wish==1:
         addpic()
@@ -89,11 +96,9 @@ def main():         #main part with options
         addmail()
     if wish==4:
         Help()
-    if wish==5()
+    if wish==5:
         passw.close()
         user.close()
         time.sleep(1)
         sys.exit()
         exit()
-
-def addpic:
