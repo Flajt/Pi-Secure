@@ -1,10 +1,44 @@
 ok=False
 import sys
 import pickle
+import os
 from passlib.hash import pbkdf2_sha256
 global x
 x=0
+password1=False
+password2=None
+path="/Desktop"
+curdir=os.getcwd()
+print(curdir)
 
+def create():
+    global password1
+    global password2
+    global hash
+    Pass_ok=False   #add all important infos
+    user=input("Create a Username: ")
+    print("Welcome "+user)
+    username=open("username.pkl", "wb")
+    save=pickle.dump(user,username)
+    while password1!=password2:
+        password1=input("Enter your Password: ")
+        password2=input("Confirm your Password: ")
+        Pass_ok=True
+
+    if Pass_ok:
+        hash = pbkdf2_sha256.encrypt(password2, rounds=200000, salt_size=16)
+        password=open("pass.pkl","wb")
+        save2=pickle.dump(password, hash)
+        main()
+
+    var=hash
+    mail=input("Enter your Mail adress:")   #more important infos
+    password=open("pass.pkl","wb")
+    mail2=open("mail.pkl","wb")
+    save2=pickle.dump(password,var)
+    save3=pickle.dump(mail,mail2)
+    fileObject.close()
+    password.close()
 
 def login():
     global x
@@ -12,7 +46,7 @@ def login():
         Pass=input("Enter your Password: ")
         right=pbkdf2_sha256.verify(Pass, hash)
         if right==True:
-            print("Welcome back"+user)
+            print("Welcome back "+user)
             main()
         else:
             x=x+1
@@ -22,17 +56,18 @@ def login():
             sys.exit()
 
 try:
-  hash=open("pass.pckl","r")               #this is the part were everything Load dont know if that is working
-  user=open("fileObejct.pckl","r")
-  mail=open("mail.pckl","r")
+  hash=pickle.load(open("pass.pkl","rb"))               #this is the part were everything Load dont know if that is working
+  user=pickle.load(open("fileObejct.pkl","rb"))
+  mail=pickle.load(open("mail.pkl","rb"))
   ok=True
-
+  print(hash)
 except:
     print("Loading Error")
-    login()
+    create()
 
-    passw=open("pass.pckl","r")
-    user=open("fileObejct.pckl","r")
+def login():
+    passw=open("pass.pkl",)
+    user=open("fileObejct.pkl")
     print(user)
     while x!=3:
         passw2=input("Enter your Password: ")
@@ -40,35 +75,14 @@ except:
             main()
         else:
             x=x+1
-if x==3:
-    print("That goes wrong try it later")
-    import sys
-    sys.exit()
-    exit()
-
-Pass_ok=False   #add all important infos get an error here why?
-user=input("Create a Username: ")
-print("Welcome"+user)
-fileObject = open("username.pckl",'w')
-save=pickle.dump(user,fileObject)
-while password1!=password2:
-    password1=input("Enter your Password: ")
-    password2=input("Confirm your Password: ")
-    Pass_ok=True
-
-if Pass_ok:
-    hash = pbkdf2_sha256.encrypt(password2, rounds=200000, salt_size=16)
-    password=open("pass.pckl","w")
-    save2=pickle.dump(password,hash)
+    if x==3:
+        print("That goes wrong try it later")
+        import sys
+        sys.exit()
+        exit()
 
 
-mail=input("Enter your Mail adress:")   #more important infos
-password=open("pass.pckl","w")
-mail2=open("mail.pckl","w")
-save2=pickle.dump(password,hash)
-save3=pickle.dump(mail,mail2)
-fileObject.close()
-password.close()
+
 
 if ok==True:    #check if all is working
     login()
@@ -102,3 +116,31 @@ def main():         #main part with options
         time.sleep(1)
         sys.exit()
         exit()
+
+def Help():
+    print("Help Menue")
+    print("-----------")
+    print("")
+    print("Add picture:")
+    print("Add a picture to the Databank")
+    print("The picture should be a picture from a persons Face how can enter without warning")
+    print("Every person how is not in the Dantabank will create an alarm message")
+    print("")
+    print("-------------------------------------------------------------------")
+    print("Delete pciture")
+    print("Here you can delete pictures of the Databank so every persons Face you delete will not enter without /n a alarm message")
+    print("")
+    print("-------------------------------------------------------------------")
+    print("Add mail Adress:")
+    print("This option allows you to add a mail adress were the alarm message is going to you can add so many as you like but max 50")
+    print("")
+    print("-------------------------------------------------------------------")
+    print("For Help:")
+    print("Open this Help menue")
+    print("")
+    print("-------------------------------------------------------------------")
+    print("Logout:")
+    print("That i will dont explain")
+    t=input("Press a button to exit: ")
+    if t=="":
+        main()
