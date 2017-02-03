@@ -31,7 +31,7 @@ def create():
         save2=pickle.dump(password, hash)
         main()
 
-    var=hash
+
     mail=input("Enter your Mail adress:")   #more important infos
     password=open("pass.pkl","wb")
     mail2=open("mail.pkl","wb")
@@ -153,8 +153,9 @@ def addpic():
         t=open(pciname,"r")
     except( FileExistsError, FileNotFoundError):
         print("The file could not found try it aggain")
-    if t==open:
+    if t==True:
         print("Picture found Data will send pls wait...")
+
     else:
         while t!=open:
             picname=input("Enter the pictures name: ")
