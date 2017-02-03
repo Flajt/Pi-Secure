@@ -144,3 +144,18 @@ def Help():
     t=input("Press a button to exit: ")
     if t=="":
         main()
+
+def addpic():
+    print("Enter the name of the picture")
+    print("If you use that the first time pls add a folder on your Desktop and put every Picture in that ")
+    picname=input("Enter the picture name")
+    try:
+        t=open(pciname,"r")
+    except( FileExistsError, FileNotFoundError):
+        print("The file could not found try it aggain")
+    if t==open:
+        print("Picture found Data will send pls wait...")
+    else:
+        while t!=open:
+            picname=input("Enter the pictures name: ")
+            t=open(picname, "r")
