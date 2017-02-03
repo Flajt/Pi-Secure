@@ -1,5 +1,5 @@
 # Python-Webcam
-A python security system 
+A python security system
 Hi, i want to pragramm a securitysystem in python with a server(computer or rasberry) and some cameras...
 But i am new in Python so I need help.
 The programm should "scan" the Faces from peoples with a camera (or more at diffrent places) that want to cross a
@@ -12,3 +12,5 @@ I am working at the user login.
 Very import is that you can add more cameras than one and it should be a friendly UI.
 And a client software is very nice too but I dont know much about sockets, because the main programm
 should run later on a rasberry.
+
+I need a socket server and client script that can get pictures and user inputs.
