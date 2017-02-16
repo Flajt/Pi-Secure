@@ -22,11 +22,11 @@ def Help():                     #help part
     print("Add picture:")
     print("Add a picture to the Databank")
     print("The picture should be a picture from a persons Face how can enter without warning")
-    print("Every person how is not in the Dantabank will create an alarm message")
+    print("Every person how is not in the Dantabank will create an alarm message ")
     print("")
     print("-------------------------------------------------------------------")
     print("Delete pciture")
-    print("Here you can delete pictures of the Databank so every persons Face you delete will not enter without /n a alarm message")
+    print("Here you can delete pictures of the Databank so every persons Face you delete will not enter without a alarm message")
     print("")
     print("-------------------------------------------------------------------")
     print("Add mail Adress:")
@@ -38,7 +38,7 @@ def Help():                     #help part
     print("")
     print("-------------------------------------------------------------------")
     print("Logout:")
-    print("That i will dont explain")
+    print("That I dont explain")
     t=input("Press a button to exit: ")
     if t=="":
         main()
@@ -71,6 +71,9 @@ def addpic():           #the add Picture function
             main()
 
     print("Picture found, Data will send pls wait...")
+    s=socket.socket()
+    s.bind((host, port))
+    s.send(picname)
     m=input("Do you want to continue? [y/n]")
     if m=="y":
         addpic()
@@ -133,6 +136,9 @@ def create():
     save3=pickle.dump(mail,mail2)
     username.close()
     password.close()
+    s=socket.socket()
+    s.bind(host,port)
+    s.send(mail2)
     print("")
     main()
 
