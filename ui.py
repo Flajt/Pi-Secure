@@ -1,5 +1,6 @@
 ok=False
 import sys
+import socket
 import pickle
 import os
 import time
@@ -13,7 +14,8 @@ password2=None
 path="C:/Users/"+usern+"/Desktop/pictures/"
 curdir=os.getcwd()
 print(curdir)
-
+host="192.168.178.62"
+port=5001
 
 def Help():                     #help part
     print("Help Menue")
@@ -23,6 +25,9 @@ def Help():                     #help part
     print("Add a picture to the Databank")
     print("The picture should be a picture from a persons Face how can enter without warning")
     print("Every person how is not in the Dantabank will create an alarm message ")
+    print("If you use it the first time the programm create a picture folder for all pictures.")
+    print("If you want to add a picture put it in this folder and rund Addpicture")
+    print("Pleas name the pictures like the person who is on the picture ")
     print("")
     print("-------------------------------------------------------------------")
     print("Delete pciture")
@@ -42,6 +47,36 @@ def Help():                     #help part
     t=input("Press a button to exit: ")
     if t=="":
         main()
+
+
+def delpic():
+    s=socket.socket()
+    s.connect((host, port))
+    s.send(str.encode("Del"))
+    direList=s.recv(2400)
+    print("Here are the picture names:" + direList.decode("utf-8"))
+    delete=input("Wich picture do you want to delete: ")
+    if delete=="q":
+        main()
+    s.send(str.encode("delete"))
+    ok=s.recv(1024)
+    if ok==True:
+        print("Picture is Deleted")
+        o=input("Do you want to continue? [y/n]")
+        if o=="y":
+            delpic()
+        else:
+            main()
+    else:
+        print("Something goes wrong")
+        delpic()
+
+
+
+
+
+
+
 
 
 def addpic():           #the add Picture function
@@ -72,8 +107,13 @@ def addpic():           #the add Picture function
 
     print("Picture found, Data will send pls wait...")
     s=socket.socket()
-    s.bind((host, port))
-    s.send(picname)
+    s.connect((host ,port))
+    chunk=t.read(1024)
+    s.send(str.encode("picture"))
+    while chunk:
+        s.send(chunk)
+        chunk=t.read(1024)
+    t.close()
     m=input("Do you want to continue? [y/n]")
     if m=="y":
         addpic()
@@ -110,10 +150,12 @@ def main():         #main part with options
 
 
 
-def create():
+def create():                           #the funktion were the user add his information
     global password1
     global password2
     global hash
+    global host
+    global port
     Pass_ok=False   #add all important infos
     user=input("Create a Username: ")
     print("Welcome "+user)
@@ -131,14 +173,23 @@ def create():
 
 
     mail=input("Enter your Mail adress:")   #more important infos
+    key=input("Enter your Instapush appid: ")
+    secrect=input("Enter your Instapush secret: ")
     password=open("pass.pkl","wb")
     mail2=open("mail.pkl","wb")
+    key2=open("Key.pkl","wb")
     save3=pickle.dump(mail,mail2)
     username.close()
     password.close()
     s=socket.socket()
-    s.bind(host,port)
-    s.send(mail2)
+    s.connect((host,port))
+    mail=open("mail.pkl","rb")
+    chunk=mail.read(1024)
+    s.send(str.encode("mail"))
+    while chunk:
+        s.send(chunk)
+        chunk=mail.read(1024)
+    mail.close()
     print("")
     main()
 
@@ -169,7 +220,7 @@ try:
     user=pickle.load(open("username.pkl","rb"))
     mail=pickle.load(open("mail.pkl","rb"))
     ok=True
-except(FileExistsError, FileNotFoundError):
+except(FileExistsError, FileNotFoundError, EOFError):
     print("Loading Error")
     create()
 
