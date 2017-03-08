@@ -2,24 +2,28 @@ import os
 import sys
 import pickle
 import socket
-import threading
+import time
 mail_path="/home/pi/Desktop/Pi_Secure/mail"
 picture_path="/home/pi/Desktop/Pi_Secure/picture"
 Video_path="/home/pi/Desktop/Pi_Secure/video"
 key_path="/home/pi/Desktop/Pi_Secure/key"
 main_path="/home/pi/Pi_Secure"
+host="192.168.178.45"
+port= 5001
+s=socket.socket()
+s.bind((host, port))
 
+
+
+print("Server is online at "+host+":"+str(port))
 
 def get_data():
-    mail_path="/home/pi/Desktop/mail"
-    picture_path="/home/pi/Desktop/picture"
-    Video_path="/home/pi/Desktop/video"
+    global host
+    global port
+    global picture_path
+    global Video_path
     global key_path
     name=None
-    host="192.168.178.62"
-    port= 5001
-    s=socket.socket()
-    s.bind((host,port))
     s.listen(1)
     c ,addr=s.accept()
     print("Connection established to"+str(addr))
@@ -35,7 +39,9 @@ def get_data():
         while Mail:
             mail.write(Mail)
             Mail=c.recv(1024)
-        mail.close()
+            if not mail:
+                mail.close()
+                break
 
 
 
@@ -48,8 +54,9 @@ def get_data():
         while Key:
             key.write(Key)
             Key=c.recv(1024)
-        key.close()
-
+            if not key:
+                key.close()
+                break
 
 
     if command=="picture":
@@ -59,33 +66,47 @@ def get_data():
         while pic:
             picture.write(pic)
             pic=c.recv(1024)
-        picture.close()
+            if not pic:
+                c.send("ok")
+                picture.close()
+                break
+
 
 
     if command=="Del":
-        os.chdir(picture_path)
-        t=os.listdir()
+        try:
+            t=os.listdir()
+        except OSError:
+            t="Nothing is in this Diretory"
+            o=t,encode("utf-8")
+            c.send(o)
+            c.close()
         o=t.encode("utf-8")
         c.send(o)
         pickname=c.recv(1024)
         Picture=pickname.decode("utf-8")
         os.remove(Picture)
-        c.send(True)
+        c.send(str.encode("True"))
 
-    else:
-        c.send(false)
+
+if socket.error:
+    get_data()
+
+while True:
+    if os.path.exists(main_path):      #this should check that everything what is important be existent
         get_data()
 
 
 
-if os.path.exists(main_path):      #this should check that everything what is important be existent
-    get_data()
+    else:
+        os.chdir("/home/pi/Desktop")
+        os.mkdir("Pi_Secure")
+        os.chdir("/home/pi/Desktop/Pi_Secure/")
+        os.mkdir("pictures")
+        os.mkdir("mail")
+        os.mkdir("key")
+        get_data()
 
-else:
-    os.chdir("/home/pi/Desktop")
-    os.mkdir("Pi_Secure")
-    os.chdir("/home/pi/Desktop/Pi_Secure/")
-    os.mkdir("pictures")
-    os.mkdir("mail")
-    os.mkdir("key")
-    get_data()
+
+global c,addr
+c.close()

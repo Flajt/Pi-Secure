@@ -17,7 +17,9 @@ print(curdir)
 host="192.168.178.62"
 port=5001
 
+
 def Help():                     #help part
+    print("")
     print("Help Menue")
     print("-----------")
     print("")
@@ -46,33 +48,45 @@ def Help():                     #help part
     print("That I dont explain")
     t=input("Press a button to exit: ")
     if t=="":
+        print("")
+        print("")
         main()
 
 
-def delpic():
+def delpic():                       #the function for delete a picture
     s=socket.socket()
-    s.connect((host, port))
+    try:
+        s.connect((host, port))
+    except socket.error:
+        print("")
+        print("Could not connect to the server")
+        print("")
+        main()
     s.send(str.encode("Del"))
     direList=s.recv(2400)
     print("Here are the picture names:" + direList.decode("utf-8"))
+    if direList=="Nothing in this Directory!":
+        print("")
+        main()
     delete=input("Wich picture do you want to delete: ")
     if delete=="q":
+        s.close()
+        print("")
         main()
     s.send(str.encode("delete"))
     ok=s.recv(1024)
-    if ok==True:
+    if ok=="True":
         print("Picture is Deleted")
         o=input("Do you want to continue? [y/n]")
         if o=="y":
             delpic()
         else:
+            s.close()
             main()
     else:
         print("Something goes wrong")
-        delpic()
-
-
-
+        print("")
+        main()
 
 
 
@@ -80,8 +94,10 @@ def delpic():
 
 
 def addpic():           #the add Picture function
-    print(os.getcwd())
+    global host
+    global port
     print("Enter the name of the picture")
+    print(" ")
     try:
         t=os.chdir(path)    #test if the dir exist
     except OSError:
@@ -95,7 +111,7 @@ def addpic():           #the add Picture function
     picname=input("Enter the picture name: ")
     try:
         os.chdir(path)
-        t=open(picname,"r")
+        os.path.isfile(picname)
     except( FileExistsError, FileNotFoundError):
         print("The file could not found try it aggain")
         q=input("Do you want to continue? [y/n]")
@@ -106,14 +122,34 @@ def addpic():           #the add Picture function
             main()
 
     print("Picture found, Data will send pls wait...")
-    s=socket.socket()
-    s.connect((host ,port))
-    chunk=t.read(1024)
-    s.send(str.encode("picture"))
-    while chunk:
-        s.send(chunk)
-        chunk=t.read(1024)
-    t.close()
+    try:
+        s=socket.socket()
+        s.connect((host,port))
+    except socket.error:
+        print("!------------------------------------------------!")
+        print("Could not connect, please check your connection!")
+        print("")
+        main()
+    try:
+        command="Image"
+        s.send(str.encode("Image"))
+        s.send(str.encode(picname))
+        with open(picname,"rb") as f:
+            chunk=f.read(1024)
+            while chunk:
+                s.send(chunk)
+                chunk=f.read(1024)
+                if not chunk:
+                    f.close()
+    except socket.error:
+        print("Could not connact to the server. Please check your Connection!")
+    back=s.recv(1024)
+    back=back.encode("utf-8")
+    if back=="ok":
+        print("Image has been sucsessfully sended!")
+    else:
+        print("image was not sended!")
+        print("Check your Connection")
     m=input("Do you want to continue? [y/n]")
     if m=="y":
         addpic()
@@ -146,7 +182,9 @@ def main():         #main part with options
         time.sleep(1)
         sys.exit()
         exit()
-
+    if (KeyboardInterrupt, ValueError, Exception):
+        print("")
+        main()
 
 
 
@@ -176,20 +214,23 @@ def create():                           #the funktion were the user add his info
     key=input("Enter your Instapush appid: ")
     secrect=input("Enter your Instapush secret: ")
     password=open("pass.pkl","wb")
-    mail2=open("mail.pkl","wb")
+    mail2=open("mail.txt","wb")
     key2=open("Key.pkl","wb")
     save3=pickle.dump(mail,mail2)
     username.close()
     password.close()
     s=socket.socket()
     s.connect((host,port))
-    mail=open("mail.pkl","rb")
+    mail=open("mail.txt","rb")
     chunk=mail.read(1024)
     s.send(str.encode("mail"))
-    while chunk:
+    while chunk:                    #this funktions should send the Mail.txt content
         s.send(chunk)
         chunk=mail.read(1024)
-    mail.close()
+        if not chunk():
+            mail.close()
+            break
+
     print("")
     main()
 
@@ -203,22 +244,23 @@ def login():    #is the login menue
         Pass=input("Enter your Password: ")
         right=pbkdf2_sha256.verify(Pass, hash)
         if right==True:
+            print("")
             print("Welcome back "+user)
             print("")
             main()
 
-    if right==False:
-        x=x+1
+            if right==False:
+                x=x+1
 
-        if x==3:
-            print("That goes Wrong...")
-            exit()
-            sys.exit()
+            if x==3:
+                print("That goes Wrong...")
+                exit()
+                sys.exit()
 
 try:
     hash=pickle.load(open("pass.pkl","rb"))               #this is the part were everything Load dont know if that is working
     user=pickle.load(open("username.pkl","rb"))
-    mail=pickle.load(open("mail.pkl","rb"))
+    mail=pickle.load(open("mail.txt","rb"))
     ok=True
 except(FileExistsError, FileNotFoundError, EOFError):
     print("Loading Error")
