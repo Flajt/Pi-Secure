@@ -53,6 +53,50 @@ def Help():                     #help part
         main()
 
 
+
+
+
+def addmail():      # add mail function
+    global host
+    global port
+
+    print("")
+    print("Here you can enter another E-Mail adress")
+    mail=input("Enter your Mail adress: ")
+    check=input("Is that the right adress?[y/n]: "+str(mail)+": ")
+    if check=="y":
+        s=socket.socket()
+        s.connect((host, port))
+        s.send(str.encode("mail"))
+        traceback=s.recv(1024)
+        traceback=traceback.decode("utf-8")
+        if traceback=="ok":
+            s.send(mail.encode("utf-8"))
+            print(mail)
+            s.close()
+            print("New Mail adress was sended")
+            print("")
+            print("")
+            main()
+
+        elif check=="q":
+            print("")
+            print("")
+            main()
+
+        else:
+            print("Something went wrong ")
+            print("")
+            main()
+
+    else:
+        print("")
+        print("Enter the correct adress")
+        print("")
+        addmail()
+
+#UnicodeDecodeError: 'utf-8' codec can't decode byte 0xff in position 13: invalid start byte
+
 def delpic():                       #the function for delete a picture
     s=socket.socket()
     try:
@@ -112,13 +156,14 @@ def addpic():           #the add Picture function
     try:
         os.chdir(path)
         os.path.isfile(picname)
-    except( FileExistsError, FileNotFoundError):
+    except( FileExistsError, FileNotFoundError, Exception):
         print("The file could not found try it aggain")
         q=input("Do you want to continue? [y/n]")
         if q=="y":
             addpic()
         if q=="n":
             print("")
+            s.close()
             main()
 
     print("Picture found, Data will send pls wait...")
@@ -133,18 +178,22 @@ def addpic():           #the add Picture function
     try:
         command="Image"
         s.send(str.encode("Image"))
-        s.send(str.encode(picname))
+        time.sleep(1)
+        s.send(str.encode(picname))# send picname to the server
         with open(picname,"rb") as f:
             chunk=f.read(1024)
             while chunk:
                 s.send(chunk)
                 chunk=f.read(1024)
+                print(chunk)
                 if not chunk:
+                    print("fertig")
                     f.close()
+
     except socket.error:
-        print("Could not connact to the server. Please check your Connection!")
+        print("Could not connect to the server. Please check your Connection!")
     back=s.recv(1024)
-    back=back.encode("utf-8")
+    back=back.decode("utf-8")
     if back=="ok":
         print("Image has been sucsessfully sended!")
     else:
@@ -156,6 +205,7 @@ def addpic():           #the add Picture function
     if m=="n":
         print("")
         print("")
+        s.close()#close Connection
         main()
 
 
@@ -182,7 +232,7 @@ def main():         #main part with options
         time.sleep(1)
         sys.exit()
         exit()
-    if (KeyboardInterrupt, ValueError, Exception):
+    if (KeyboardInterrupt, ValueError, Exception):      #capture much errors to prevent a not valid input
         print("")
         main()
 
@@ -211,26 +261,17 @@ def create():                           #the funktion were the user add his info
 
 
     mail=input("Enter your Mail adress:")   #more important infos
-    key=input("Enter your Instapush appid: ")
-    secrect=input("Enter your Instapush secret: ")
+    key=input("Enter your Instapush appid: ")   #the appid
+    secrect=input("Enter your Instapush secret: ")  #the secret
     password=open("pass.pkl","wb")
-    mail2=open("mail.txt","wb")
     key2=open("Key.pkl","wb")
-    save3=pickle.dump(mail,mail2)
     username.close()
     password.close()
     s=socket.socket()
     s.connect((host,port))
-    mail=open("mail.txt","rb")
-    chunk=mail.read(1024)
     s.send(str.encode("mail"))
-    while chunk:                    #this funktions should send the Mail.txt content
-        s.send(chunk)
-        chunk=mail.read(1024)
-        if not chunk():
-            mail.close()
-            break
-
+    s.send(mail.encode("utf-8"))
+    s.close()
     print("")
     main()
 
@@ -260,7 +301,6 @@ def login():    #is the login menue
 try:
     hash=pickle.load(open("pass.pkl","rb"))               #this is the part were everything Load dont know if that is working
     user=pickle.load(open("username.pkl","rb"))
-    mail=pickle.load(open("mail.txt","rb"))
     ok=True
 except(FileExistsError, FileNotFoundError, EOFError):
     print("Loading Error")
