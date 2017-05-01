@@ -8,7 +8,4 @@ the person how want to cross it in the databank the camrea takes a photo and sen
 The programm should include a user inteface (to upload pictures and so on) but not a GUI.
 I hope you understood what I mean.
 
-I am working at the user login.
-Very import is that you can add more cameras than one and it should be a friendly UI.
-And a client software is very nice too but I dont know much about sockets, because the main programm
-should run later on a rasberry.
+Now I am working on the server and the communication between the server and user.
