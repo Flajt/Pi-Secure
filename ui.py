@@ -72,8 +72,9 @@ def addmail():      # add mail function
         traceback=traceback.decode("utf-8")
         if traceback=="ok":
             s.send(mail.encode("utf-8"))
-            print(mail)
             s.close()
+            print("")
+            print("")
             print("New Mail adress was sended")
             print("")
             print("")
@@ -117,15 +118,18 @@ def delpic():                       #the function for delete a picture
         s.close()
         print("")
         main()
-    s.send(str.encode("delete"))
+    s.send(str.encode(delete))
     ok=s.recv(1024)
+    ok=ok.decode("utf-8")
     if ok=="True":
-        print("Picture is Deleted")
+        print("Picture has been deleted")
         o=input("Do you want to continue? [y/n]")
         if o=="y":
             delpic()
         else:
             s.close()
+            print("")
+            print("")
             main()
     else:
         print("Something goes wrong")
@@ -142,75 +146,67 @@ def addpic():           #the add Picture function
     global port
     print("Enter the name of the picture")
     print(" ")
-    try:
-        t=os.chdir(path)    #test if the dir exist
-    except OSError:
-        print("error")
-        t=False
-    if t==False:
-        os.chdir("C:/Users/"+usern+"/Desktop")
-        os.mkdir("pictures")
-        print(os.getcwd())
-    print(os.getcwd())
-    picname=input("Enter the picture name: ")
+    picname=input("Enter the name of the picture: ")
     try:
         os.chdir(path)
-        os.path.isfile(picname)
-    except( FileExistsError, FileNotFoundError, Exception):
-        print("The file could not found try it aggain")
-        q=input("Do you want to continue? [y/n]")
-        if q=="y":
-            addpic()
-        if q=="n":
-            print("")
-            s.close()
-            main()
+        if os.path.isfile(picname)==True:
+            print("Picture found, Data will send pls wait...")
+        else:
+            print("The file could not found try it aggain")
+            q=input("Do you want to continue? [y/n]")
+            if q=="y":
+                addpic()
+            if q=="n":
+                print("")
+                s.close()
+                main()
+            try:
+                s=socket.socket()
+                s.connect((host,port))
+            except socket.error:
+                print("!------------------------------------------------!")
+                print("Could not connect, please check your connection!")
+                print("!------------------------------------------------!")
+                print("")
+                main()
+            try:
+                command="Image"
+                s.send(command.encode("utf-8"))
+                back=s.recv(1024)
+                back=back.decode("utf-8")
+                if back=="ok":
+                    s.send(str.encode(picname))# send picturename to the server
+                    with open(picname,"rb") as f:
+                        chunk=f.read(1024)
+                        while chunk:
+                            s.send(chunk)
+                            chunk=f.read(1024)
+                            if not chunk:
+                                print("Your picture has been send")
+                                f.close()
+                                print("")
+                                s.close()
+                                main()
+            except socket.error:
+                print("Could not connect to the server. Please check your Connection!")
+            back=s.recv(1024)
+            back=back.decode("utf-8")
+            if back=="ok":
+                print("Image has been sucsessfully sended!")
+            else:
+                print("image was not sended!")
+                print("Check your Connection")
+            m=input("Do you want to continue? [y/n] ")
+            if m=="y":
+                addpic()
+            elif m=="n":
+                print("")
+                print("")
+                s.close()#close Connection
+                main()
 
-    print("Picture found, Data will send pls wait...")
-    try:
-        s=socket.socket()
-        s.connect((host,port))
-    except socket.error:
-        print("!------------------------------------------------!")
-        print("Could not connect, please check your connection!")
-        print("")
-        main()
-    try:
-        command="Image"
-        s.send(str.encode("Image"))
-        time.sleep(1)
-        s.send(str.encode(picname))# send picname to the server
-        with open(picname,"rb") as f:
-            chunk=f.read(1024)
-            while chunk:
-                s.send(chunk)
-                chunk=f.read(1024)
-                print(chunk)
-                if not chunk:
-                    print("fertig")
-                    f.close()
 
-    except socket.error:
-        print("Could not connect to the server. Please check your Connection!")
-    back=s.recv(1024)
-    back=back.decode("utf-8")
-    if back=="ok":
-        print("Image has been sucsessfully sended!")
-    else:
-        print("image was not sended!")
-        print("Check your Connection")
-    m=input("Do you want to continue? [y/n]")
-    if m=="y":
-        addpic()
-    if m=="n":
-        print("")
-        print("")
-        s.close()#close Connection
-        main()
-
-
-
-
+print("Hi")
 def main():         #main part with options
     global user
     global passw
@@ -254,7 +250,7 @@ def create():                           #the funktion were the user add his info
         password2=input("Confirm your Password: ")
         Pass_ok=True
 
-    if Pass_ok:
+    if Pass_ok==True:
         hash = pbkdf2_sha256.encrypt(password2, rounds=200000, salt_size=16)
         password=open("pass.pkl","wb")
         save2=pickle.dump(hash, password)
