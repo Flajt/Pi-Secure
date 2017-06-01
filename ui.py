@@ -96,7 +96,7 @@ def addmail():      # add mail function
         print("")
         addmail()
 
-#UnicodeDecodeError: 'utf-8' codec can't decode byte 0xff in position 13: invalid start byte
+#UnicodeDecodeError: 'utf-8' codec can't decode byte 0xff in position 13: invalid start byte (fix the problem while split the message)
 
 def delpic():                       #the function for delete a picture
     s=socket.socket()
@@ -109,12 +109,14 @@ def delpic():                       #the function for delete a picture
         main()
     s.send(str.encode("Del"))
     direList=s.recv(2400)
-    print("Here are the picture names:" + direList.decode("utf-8"))
     if direList=="Nothing in this Directory!":
         print("")
         main()
+    else:
+        print("Here are the picture names:" + direList.decode("utf-8"))
     delete=input("Wich picture do you want to delete: ")
     if delete=="q":
+        s.send(str.encode("q"))
         s.close()
         print("")
         main()
@@ -147,19 +149,9 @@ def addpic():           #the add Picture function
     print("Enter the name of the picture")
     print(" ")
     picname=input("Enter the name of the picture: ")
-    try:
-        os.chdir(path)
-        if os.path.isfile(picname)==True:
-            print("Picture found, Data will send pls wait...")
-        else:
-            print("The file could not found try it aggain")
-            q=input("Do you want to continue? [y/n]")
-            if q=="y":
-                addpic()
-            if q=="n":
-                print("")
-                s.close()
-                main()
+    os.chdir(path)
+    if os.path.isfile(picname)==True:
+            print("Picture found, move to the next step")
             try:
                 s=socket.socket()
                 s.connect((host,port))
@@ -175,6 +167,7 @@ def addpic():           #the add Picture function
                 back=s.recv(1024)
                 back=back.decode("utf-8")
                 if back=="ok":
+                    print("Picture will send to the server")
                     s.send(str.encode(picname))# send picturename to the server
                     with open(picname,"rb") as f:
                         chunk=f.read(1024)
@@ -187,26 +180,58 @@ def addpic():           #the add Picture function
                                 print("")
                                 s.close()
                                 main()
+                else:
+                    print("")
+                    print("!-----------------------------------------------------!")
+                    print("Something goes wrong, maybe the command is not working")
+                    print("!-----------------------------------------------------!")
+                    print("")
+                    main()
+
             except socket.error:
+                print("")
+                print("!-------------------------------------------------------------!")
                 print("Could not connect to the server. Please check your Connection!")
+                print("!-------------------------------------------------------------!")
+                print("")
+                main()
+
             back=s.recv(1024)
             back=back.decode("utf-8")
             if back=="ok":
                 print("Image has been sucsessfully sended!")
             else:
-                print("image was not sended!")
+                print("")
+                print("!--------------------!")
+                print("Image was not sended!")
                 print("Check your Connection")
-            m=input("Do you want to continue? [y/n] ")
+                print("!--------------------!")
+                print("")
+                main()
+                m=input("Do you want to continue? [y/n] ")
             if m=="y":
                 addpic()
-            elif m=="n":
+            else:
                 print("")
                 print("")
                 s.close()#close Connection
                 main()
 
+    else:
+        print("The file could not found try it aggain")
+        q=input("Do you want to continue? [y/n]")
+        if q=="y":
+            print("")
+            addpic()
+        if q=="n":
+            print("")
+            s.close()
+            main()
 
-print("Hi")
+
+
+
+
 def main():         #main part with options
     global user
     global passw
@@ -286,8 +311,8 @@ def login():    #is the login menue
             print("")
             main()
 
-            if right==False:
-                x=x+1
+        if right==False:
+            x=x+1
 
             if x==3:
                 print("That goes Wrong...")
