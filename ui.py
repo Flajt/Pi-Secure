@@ -252,9 +252,15 @@ def main():         #main part with options
     if wish==5:
         time.sleep(1)
         sys.exit()
+        user.close()
+        hash.close()
         exit()
-    if (KeyboardInterrupt, ValueError, Exception):      #capture much errors to prevent a not valid input
+    else:      #capture much errors to prevent a not valid input
         print("")
+        print("!----------------!")
+        print("Not valid input!")
+        print("!---------------!")
+        print
         main()
 
 
@@ -305,6 +311,7 @@ def login():    #is the login menue
     while x!=3:
         Pass=input("Enter your Password: ")
         right=pbkdf2_sha256.verify(Pass, hash)
+        print(right)
         if right==True:
             print("")
             print("Welcome back "+user)
@@ -324,7 +331,10 @@ try:
     user=pickle.load(open("username.pkl","rb"))
     ok=True
 except(FileExistsError, FileNotFoundError, EOFError):
+    print("!-------------!")
     print("Loading Error")
+    print("!------------!")
+    print("")
     create()
 
 
@@ -333,6 +343,8 @@ if ok==True:    #check if all is working
     login()
 
 else:
+    print("!----------!")
     print("Load error") # this is the error if the file cant Load
+    print("!---------!")
     exit()
     sys.exit()
