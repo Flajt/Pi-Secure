@@ -1,0 +1,1 @@
+Unter Windows nur \neg\datei unter Linux ganzer Pfad.
