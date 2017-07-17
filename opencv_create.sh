@@ -1,0 +1,1 @@
+opencv_createsamples -img "Your image/s here" -bg "Your bg file" -info "The info file name that will be created" -pngoutput pos -minxangle "x" -minyangle "y" -minzangle "z"  -num "The picture number" 
