@@ -31,8 +31,7 @@ def get_data():
 	data=data.decode("utf-8")
 	dataMessage=data.split(" ", 1)  #split data in command a picture or text Dokument
 	command=dataMessage[0]
-	#print(command)
-
+	#print(command) for debugging enable this
 	if command=="mail":
 		#c.send(str.encode("ok"))
 		os.chdir(mail_path)
@@ -120,28 +119,23 @@ def get_data():
 			get_data()
 
 
-if socket.error:
-	get_data()
+#if socket.error:
+	#get_data()
 
 while True:
-		os.chdir(main_path)
-		try:
-				text=open("ok.txt","r")#this should check that everything what is important be existent
-				if text=="ok":
-						get_data()
-		except(FileExistsError, FileNotFoundError):
-				#print("bad")
-				os.chdir("/home/pi/Desktop")
-				os.mkdir("Pi_Secure")
-				os.chdir("/home/pi/Desktop/Pi_Secure/")
-				l=open("ok.txt","w")
-				l.write("1")
-				l.close()
-				os.mkdir("pictures")
-				os.mkdir("mail")
-				os.mkdir("key")
-				get_data()
 
+	try:
+		os.chdir(main_path)
+		text=open("ok.txt","r")#this should check that everything what is important be existent
+		if text=="ok":
+			get_data()
+	except(Exception):
+		os.chdir("/home/pi/Desktop")
+		os.mkdir("Pi_Secure")
+		os.chdir("/home/pi/Desktop/Pi_Secure/")
+		l=open("ok.txt","w")
+		l.write("1")
+		l.close()
 		get_data()
 
 
@@ -151,3 +145,5 @@ while True:
 
 global c,addr
 c.close()
+
+

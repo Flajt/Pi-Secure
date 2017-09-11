@@ -14,4 +14,4 @@ os.mkdir("pos")
 os.mkdir("scripts")
 os.mkdir("mail")
 
-print("Please copy all scripts with .py or .sh in the scripts folder!"
+print("Please copy all scripts with .py or .sh in the scripts folder!")
