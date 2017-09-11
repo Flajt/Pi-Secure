@@ -1,0 +1,45 @@
+#Windows info dokument
+
+Recommande way:
+To install Opencv for Windows please follow that link:
+http://docs.opencv.org/3.1.0/d5/de5/tutorial_py_setup_in_windows.html
+
+Esay way 1:
+1. Install Anaconda from the official site:
+   https://www.continuum.io/downloads/%E3%80%82
+
+2. Run the installer and follow the instructions.
+
+3. Open a cmd shell or a Anaconda shell.
+
+4. Type conda install python-opencv or if it doesnt work try conda install opencv.
+
+5. That should download opencv from the Anaconda cloud.
+
+6. Navigate to your Anaconda folder and open python.exe.
+
+7. Try to import cv2
+
+8. If it work you are done
+
+Easy way 2:
+Not sure how it works please try:
+ 
+1. Download from this site the Opencv.exe with your version of Windows and python.
+   Link: http://www.lfd.uci.edu/~gohlke/pythonlibs/#opencv
+   
+2.  Try to copy the folder to yor python libs folder
+  
+3.  Try to import cv2 
+
+note: If it doesnt work try to google it ^^
+
+Easy way 3:
+
+1. Search on google for opencv.whl (wheel)
+2. Open a cmd shell in that directory were you dowload that file and type pip install + the name of the .whl install
+3. Open python and try import cv2
+
+Note:
+If you want to create your own .xml file use the Recommanded way.
+Because the .exe files you need are not downloded the other ways.
