@@ -2,7 +2,7 @@
 A python security system
 
 What is it:
-This project should allow you to setup your own home securitysystem for less money.
+This project should allow you to setup your own home security-system for less money.
 
 What you will need:
 You need a Raspberry Pi with Internet, Python 3, another computer and a Camera with cable.
