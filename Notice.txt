@@ -1,0 +1,56 @@
+The projekt Py-Scure is a programm package that alows you to set up a Face-detection security system.
+   Copyright (C) 2017  Flajt
+
+
+
+   This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published
+   by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
+
+   This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+   or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License along with this program; if not, see <http://www.gnu.org/licenses/>.
+   !See Note.txt for extra agreements!
+
+
+Extern libarys:
+
+   The Scripts in that projekts use extern Python-Libarys.
+   This mean every libary that are not preinstalled wih the Anaconda (https://www.continuum.io/downloads)
+
+   List:
+     Opencv v.3.1
+     Instapush
+
+
+
+
+
+Addition Terms:
+
+   Meaning (Only for this part below):
+     developer: The person how create the Script/s or projekt/s
+     projekt: In this case Pi-Secure
+     you: Reader
+
+   It`s you not allowed to change the name of the developer in any way.
+   But it is you allowed to create a note in a extra file that you can print.
+   If you create an extra Script then you can display you name.
+   If your Script but it use code from the projekt in any way, you have to
+   print/show the name of the developer too.
+
+   You have to mark were you make changes in the code, with your name and a date.
+   (Except the developer in this case Flajt)
+
+   You have to send the newest version of the code to the developer.
+   If you want to push this Code to the developers projekt, he is able to forbid it.
+
+   If you are use code from this projekt you have to show that.
+   You can create a file with the name of the projekt and the developers name, and a link to
+   the projekt. You can show the infos while starting your programm/script.
+   If you create a projekt with documetation, you
+
+   If anything from the Addtion Terms or the document incompatible with the License (or not correct in any way), you can ingnore it, but you have to inform the developer,
+   about what is not correct.
+
+   You accept with running any of this scripts out of the projekt that you accept the License and the Addition Terms.
