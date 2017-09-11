@@ -37,7 +37,7 @@ note: If it doesnt work try to google it ^^
 Easy way 3:
 
 1. Search on google for opencv.whl (wheel)
-2. Open a cmd shell in that directory were you dowload that file and type pip install + the name of thw .whl install
+2. Open a cmd shell in that directory were you dowload that file and type pip install + the name of the .whl install
 3. Open python and try import cv2
 
 Note:
