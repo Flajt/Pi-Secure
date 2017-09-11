@@ -13,6 +13,7 @@ You need a Raspberry Pi with Internet, Python 3, another computer and a Camera w
  
 How you do this:
 For this please visit my Wiki site.
+https://github.com/Flajt/Pi-Secure/wiki
 
 If you got problems or questions:
 Please write me a mail at: tjhannover@gmail.com and/or open an issue.
