@@ -6,17 +6,40 @@ import os
 import time
 import getpass
 from passlib.hash import pbkdf2_sha256
+import cv2 as cv
+
+
 global x
 usern=getpass.getuser()
 x=0
 password1=False
 password2=None
-path="C:/Users/"+usern+"/Desktop/pictures/"
+path="C:/Users/"+usern+"/Desktop/pictures/"#these is the folder wich contains the Images wich you can send
+cascade_path="D:\DOWNLOADS\opencv\sources\data\haarcascades_GPU\haarcascade_frontalface_default.xml" #Here enter your path to your cascade
 curdir=os.getcwd()
 print(curdir)
 host="192.168.178.62"
-port=5001
+port=5002
 
+
+def get_images():
+    image_number=0
+    video=cv.VideoCapture(0)
+    while True:
+        ret, frame=video.read()
+        face=cv.CascadeClassifier(cascade_path)
+        convert_gray=cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
+        faces=face.detectMultiScale(convert_gray ,scaleFactor=1.4 , minNeighbors=5, minSize=(50,50))
+        for (x,y,w,h) in faces:
+            cv.imwrite(path+"/im_"+str(image_number)+".jpg",frame)
+            image_number=image_number+1
+        if image_number>=22:
+            break
+            print("Taking Pictures done!")
+            print("You can now send them with the send option!")
+            print("")
+            print("")
+            main()
 
 def Help():                     #help part
     print("")
@@ -32,7 +55,7 @@ def Help():                     #help part
     print("Pleas name the pictures like the person who is on the picture ")
     print("")
     print("-------------------------------------------------------------------")
-    print("Delete pciture")
+    print("Delete picture")
     print("Here you can delete pictures of the Databank so every persons Face you delete will not enter without a alarm message")
     print("")
     print("-------------------------------------------------------------------")
@@ -46,6 +69,13 @@ def Help():                     #help part
     print("-------------------------------------------------------------------")
     print("Logout:")
     print("That I dont explain")
+    print("")
+    print("-------------------------------------------------------------------")
+    print("Get Images:")
+    print("This runs a programm that capture your face for the face detection")
+    print("algorithm. You only need to send this images with the Add picture command.")
+    print("")
+    print("-------------------------------------------------------------------")
     t=input("Press a button to exit: ")
     if t=="":
         print("")
@@ -146,6 +176,7 @@ def delpic():                       #the function for delete a picture
 def addpic():           #the add Picture function
     global host
     global port
+    check_out=False
     print("Enter the name of the picture")
     print(" ")
     picname=input("Enter the name of the picture: ")
@@ -155,7 +186,8 @@ def addpic():           #the add Picture function
             try:
                 s=socket.socket()
                 s.connect((host,port))
-            except socket.error:
+
+            except (socket.error):
                 print("!------------------------------------------------!")
                 print("Could not connect, please check your connection!")
                 print("!------------------------------------------------!")
@@ -177,9 +209,17 @@ def addpic():           #the add Picture function
                             if not chunk:
                                 print("Your picture has been send")
                                 f.close()
-                                print("")
-                                s.close()
-                                main()
+                                answer=input("Do you wish to send another pic? [y/n]: ")
+                                if answer=="y":
+                                    s.close()
+                                    addpic()
+
+                                else:
+                                    #f.close()
+                                    print("")
+                                    s.close()
+                                    check_out=False
+                                    main()
                 else:
                     print("")
                     print("!-----------------------------------------------------!")
@@ -225,7 +265,10 @@ def addpic():           #the add Picture function
             addpic()
         if q=="n":
             print("")
-            s.close()
+            try:
+                s.close()
+            except Exception:
+                pass
             main()
 
 
@@ -240,27 +283,32 @@ def main():         #main part with options
     print("3:Add mail Adress")
     print("4:For help")
     print("5:For logout")
+    print("6:Get Images")
     wish=int(input("What do you want to do?: "))
-    if wish==1:
-        addpic()
-    if wish==2:
-        delpic()
-    if wish==3:
-        addmail()
-    if wish==4:
-        Help()
-    if wish==5:
-        time.sleep(1)
-        sys.exit()
-        user.close()
-        hash.close()
-        exit()
-    else:      #capture much errors to prevent a not valid input
+    try:
+        if wish==1:
+            addpic()
+        elif wish==2:
+            delpic()
+        elif wish==3:
+            addmail()
+        elif wish==4:
+            Help()
+        elif wish==5: #error fixed something with the closing process was wrong
+            sys.exit()
+            exit()
+        elif wish==6:
+            get_images()
+        else:      #capture much errors to prevent a not valid input
+            print("")
+            print("!----------------!")
+            print("Not valid input!")
+            print("!---------------!")
+            print
+            main()
+    except Exception as e :
         print("")
-        print("!----------------!")
-        print("Not valid input!")
-        print("!---------------!")
-        print
+        print("")
         main()
 
 
@@ -289,7 +337,7 @@ def create():                           #the funktion were the user add his info
 
     mail=input("Enter your Mail adress:")   #more important infos
     key=input("Enter your Instapush appid: ")   #the appid
-    secrect=input("Enter your Instapush secret: ")  #the secret
+    secret=input("Enter your Instapush secret: ")  #the secret
     password=open("pass.pkl","wb")
     key2=open("Key.pkl","wb")
     username.close()
@@ -297,8 +345,22 @@ def create():                           #the funktion were the user add his info
     s=socket.socket()
     s.connect((host,port))
     s.send(str.encode("mail"))
+    time.sleep(0.1)
     s.send(mail.encode("utf-8"))
     s.close()
+    s=socket.socket()
+    s.connect((host, port))
+    s.send(str.encode("key"))
+    time.sleep(0.1)
+    s.send(key.encode("utf-8"))
+    s.close()
+    s=socket.socket()
+    s.connect((host, port))
+    s.send(str.encode("key2"))
+    time.sleep(0.1)
+    s.send(secret.encode("utf-8"))
+    s.close()
+
     print("")
     main()
 
@@ -313,6 +375,10 @@ def login():    #is the login menue
         right=pbkdf2_sha256.verify(Pass, hash)
         print(right)
         if right==True:
+            print("#########################################################")
+            print("Programmer: Flajt")
+            print("License: License: GNU General Public License, Version 3")
+            print("#########################################################")
             print("")
             print("Welcome back "+user)
             print("")
