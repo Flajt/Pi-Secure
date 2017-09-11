@@ -4,6 +4,12 @@ import os
 import cv2 as cv
 import time
 
+print("###############################################")
+print("Programmer: Flajt")
+print("License: GNU General Public License, Version 3")
+print("##############################################")
+
+
 
 bad_path="/home/pi/Desktop/Pi_Secure/bad_images/"
 Id=open("/home/pi/Desktop/Pi_Secure/dataset/ID.txt","r")
