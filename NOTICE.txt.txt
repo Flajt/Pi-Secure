@@ -20,7 +20,7 @@ Extern libarys:
 
     List:
       Opencv v.3.1
-
+      Instapush
 
 
 
@@ -30,7 +30,7 @@ Addition Terms:
 
     Meaning (Only for this part below):
       developer: The person how create the Script/s or projekt/s
-      projekt: In this case Py-Secure
+      projekt: In this case Pi-Secure
       you: Reader
 
     It`s you not allowed to change the name of the developer in any way.
@@ -50,7 +50,7 @@ Addition Terms:
     the projekt. You can show the infos while starting your programm/script.
     If you create a projekt with documetation, you
 
-    If anything from the Addtion Terms incompatible with the License, you can ingnore it, but you have to Inform the developer,
+    If anything from the Addtion Terms or the document incompatible with the License (or not correct in any way), you can ingnore it, but you have to inform the developer,
     about what is not correct.
 
     You accept with running any of this scripts out of the projekt that you accept the License and the Addition Terms.
