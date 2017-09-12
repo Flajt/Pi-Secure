@@ -4,12 +4,6 @@ import os
 import cv2 as cv
 import time
 
-print("###############################################")
-print("Programmer: Flajt")
-print("License: GNU General Public License, Version 3")
-print("##############################################")
-
-
 
 bad_path="/home/pi/Desktop/Pi_Secure/bad_images/"
 Id=open("/home/pi/Desktop/Pi_Secure/dataset/ID.txt","r")
@@ -21,21 +15,24 @@ notifier=notifier.notyfie()
 def main_detection():
 	while True:
 		IDS, person_found, conf, frame=recognizer.recognize(0)
-		if conf>=80.0:
-			print(frame)
-			print(type(frame))
-			#read=cv.imread(str(frame))
-			curtime=time.strftime("%d.%m.%Y%H:%M:%S")
-			#cv.imwrite(,bad_path+curtime+".txt")
-			IDS="Unknown person"
-			notifier.sendmail()
-			notifier.instapush(curtime)
+		try:
+			if conf>=80.0:
+				#print(frame)
+				#print(type(frame))
+				curtime=time.strftime("%d.%m.%Y%H:%M:%S")
+				cv.imwrite(bad_path+curtime+".jpg",frame)
+				IDS="Unknown person"
+				notifier.sendmail()
+				notifier.instapush(curtime)
+		except TypeError:
+			pass
 
-		print(IDS)
-		print("conf "+str(conf))
+			#print(IDS)
+			#print("conf "+str(conf))
+		
 		for objects in Idlist:
 			if str(IDS)==objects:
-				print(objects)
+				#print(objects)
 				name=nameslist[int(objects)-1]
 				print(name)
 				

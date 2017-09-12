@@ -12,7 +12,7 @@ class notyfie():
 	def __init__(self):
 		self.sender=open("/home/pi/Desktop/Pi_Secure/mail/mail.txt","r")
 		self.sender=self.sender.readline()
-		print(self.sender)
+		#print(self.sender)
 		self.bad_path="/home/pi/Desktop/Pi_Secure/bad_images/"
 		self.id_path="/home/pi/Desktop/Pi_Secure/key/"
 		
@@ -20,6 +20,8 @@ class notyfie():
 		
 
 	def sendmail(self):
+                """Allow you to send a mail"""
+
 		content="An unknown person enter your area."+"\n"+"Picture below with his face."
 		msg=MIMEMultipart()
 		msg["From"]="pysecure1@gmail.com"
@@ -50,6 +52,7 @@ class notyfie():
 
 
 	def instapush(self, time):
+                """Allow you to send an instapush message"""
 		ID=open(self.id_path+"Key.txt","r")
 		ID=ID.read()
 		Secret=open(self.id_path+"secret.txt","r")

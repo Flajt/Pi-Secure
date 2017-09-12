@@ -13,5 +13,5 @@ os.mkdir("pictures")
 os.mkdir("pos")
 os.mkdir("scripts")
 os.mkdir("mail")
-
-print("Please copy all scripts with .py or .sh in the scripts folder!")
+os.system("sudo pip3 install instapush")
+print("Please copy all scripts with .py or .sh in the scripts folder!"
