@@ -58,4 +58,4 @@ Addition Terms:
    If anything from the Addtion Terms or the document incompatible with the License (or not correct in any way), you can ingnore it, but you have to inform the developer,
    about what is not correct.
 
-   You accept with running any of this scripts out of the projekt that you accept the License and the Addition Terms.
+    With running any of this scripts from the projekt that you accept the License and the Addition Terms.
