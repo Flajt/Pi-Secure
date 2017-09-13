@@ -52,7 +52,7 @@ class notyfie():
 
 
 	def instapush(self, time):
-                """Allow you to send an instapush message"""
+		"""Allow you to send an instapush message"""
 		ID=open(self.id_path+"Key.txt","r")
 		ID=ID.read()
 		Secret=open(self.id_path+"secret.txt","r")
