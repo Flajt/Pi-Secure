@@ -33,6 +33,11 @@ Addition Terms:
      projekt: In this case Pi-Secure
      you: Reader
 
+   This "software" (the scripts) is for private purposes only.
+   If you want to use it for your company or anything else that is not
+   for private purposes please mail me at: tjhannover@gmail.com .   
+   
+   
    It`s you not allowed to change the name of the developer in any way.
    But it is you allowed to create a note in a extra file that you can print.
    If you create an extra Script then you can display you name.
