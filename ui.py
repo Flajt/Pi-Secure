@@ -376,10 +376,11 @@ def login():    #is the login menue
         right=pbkdf2_sha256.verify(Pass, hash)
         print(right)
         if right==True:
-            print("#########################################################")
+            print("########################################################################################")
             print("Programmer: Flajt")
             print("License: License: GNU General Public License, Version 3")
-            print("#########################################################")
+            print("With running any script from the project, you aggred to the Notice.txt and the License.")
+            print("########################################################################################")
             print("")
             print("Welcome back "+user)
             print("")
