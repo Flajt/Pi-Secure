@@ -8,6 +8,7 @@ picture_path="/home/pi/Desktop/Pi_Secure/pictures/"
 Video_path="/home/pi/Desktop/Pi_Secure/video/"
 key_path="/home/pi/Desktop/Pi_Secure/key/"
 main_path="/home/pi/Desktop/Pi_Secure/"
+datasets="/home/pi/Desktop/Pi_Secure/dataset/"
 host="192.168.178.62" #enter your IP here
 port=5002 #enter your port here
 s=socket.socket()
@@ -140,7 +141,15 @@ def get_data():
 	elif command=="info":
 		try:
 			c.send("ok")
-			os.chdir(main_path)# add information script + handler
+			os.chdir()
+			os.chdir(datasets)# add information script + handler
+			with open("ID.txt","r")as f:
+				data=f.read()
+				data=data.split("\n")
+				for i in data:
+					d=i.split(" ")[0]
+				d=str(d)
+				c.send(d.encode("utf-8"))
 			with open("inform_me.txt","w") as f:
 				name=s.recv(1024).decode("utf-8")
 				f.write(name)
