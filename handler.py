@@ -49,7 +49,7 @@ def main_detection():
 					notifier.instapush(blacklisted=persons.index(i-1))
 					notifier.sendmail(content="A blacklisted person enterd your area! Image below")
 
-			if name==nameslist.index(IDS-1):
+			if name==nameslist[IDS-1]:
 				curtime=time.strftime("%d.%m.%Y%H:%M:%S")
 				cv.imwrite(bad_path+curtime+".jpg",frame)
 				notifier.instapush(inform=True, person=name)
