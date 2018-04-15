@@ -15,21 +15,21 @@ class notyfie():
 		#print(self.sender)
 		self.bad_path="/home/pi/Desktop/Pi_Secure/bad_images/"
 		self.id_path="/home/pi/Desktop/Pi_Secure/key/"
-		
-		
-		
 
-	def sendmail(self):
-                """Allow you to send a mail"""
 
-		content="An unknown person enter your area."+"\n"+"Picture below with his face."
+
+
+	def sendmail(self,content="An unknow person entered your area. Picture of him/her below",image=True):
+		"""Allow you to send a mail"""
+
+		#content="An unknown person enter your area."+"\n"+"Picture below with his face."
 		msg=MIMEMultipart()
 		msg["From"]="pysecure1@gmail.com"
 		msg["To"]=self.sender
 		msg["Subject"]="Security Warning!"
-		
+
 		msg.attach(MIMEText(content,"plain"))
-		
+
 		liste=[]
 		for images in os.listdir(self.bad_path):
 			liste.append(images)
@@ -42,7 +42,7 @@ class notyfie():
 		encoders.encode_base64(part)
 		part.add_header("Content-Disposition","attachmet; filename= "+image)
 		msg.attach(part)
-		
+
 		text=msg.as_string()
 		mail=smtplib.SMTP("smtp.gmail.com",587)
 		mail.ehlo()
@@ -51,11 +51,16 @@ class notyfie():
 		mail.sendmail("pysecure1@gmail.com",self.sender,text)
 
 
-	def instapush(self, time):
+	def instapush(self, time,blacklisted=[False,None],inform=[False,None]):
 		"""Allow you to send an instapush message"""
 		ID=open(self.id_path+"Key.txt","r")
 		ID=ID.read()
 		Secret=open(self.id_path+"secret.txt","r")
 		Secret=Secret.read()
 		app = App(appid=ID,secret=Secret)
-		app.notify(event_name='Warning', trackers={ 'time': time})
+		if blacklisted==False:
+			app.notify(event_name='Warning', trackers={ 'time': time})
+		elif blacklisted[0]==True:
+		elif whitlisted[0]==True:
+			app.notif(event_name="blacklist",tracker={"Name":blacklisted[1]})
+			app.notify(event_name="Inform_me",tracker{"Person":whitlisted[1]})

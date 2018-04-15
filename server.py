@@ -12,10 +12,12 @@ host="192.168.178.62" #enter your IP here
 port=5002 #enter your port here
 s=socket.socket()
 s.bind((host, port))
-
-
-
+"""
+Improve the server_up.sh
+"""
 print("Server is online at "+host+":"+str(port))
+os.chdir(main_path+"scripts")
+os.system("sudo ./handler.py")
 
 def get_data():
 	global host
@@ -118,16 +120,36 @@ def get_data():
 		except Exception:
 			get_data()
 
-
-#if socket.error:
-	#get_data()
-
+	elif command=="black":
+		try:
+			c.send(str.encode("ok"))
+			os.chdir(picture_path)
+			with open("ID.txt","r") as f:
+				data=f.read()
+				data=data.split("\n")
+				for i in data:
+					d=i.split(" ")[0]
+				d=str(d)
+				c.send(d.encode("utf-8"))
+				person_to_list=c.recv(1024).decode("utf-8")
+				os.chdir(main_path)
+				with open("black.txt","a") as f:
+					f.write(person_to_list+"\n")
+		except Exception as e:
+			get_data()
+	elif command=="info":
+		try:
+			c.send("ok")
+			os.chdir(main_path)# add information script + handler
+			with open("inform_me.txt","w") as f:
+				name=s.recv(1024).decode("utf-8")
+				f.write(name)
+			s.send(str.encode("ok"))
 while True:
-
 	try:
 		os.chdir(main_path)
 		text=open("ok.txt","r")#this should check that everything what is important be existent
-		if text=="ok":
+		if text=="1":
 			get_data()
 	except(Exception):
 		os.chdir("/home/pi/Desktop")
@@ -145,5 +167,3 @@ while True:
 
 global c,addr
 c.close()
-
-
