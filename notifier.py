@@ -1,7 +1,7 @@
 import os
 import smtplib
 from instapush import Instapush, App
-form pushetta import Pushetta
+from pushetta import Pushetta
 from email import *
 from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
