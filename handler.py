@@ -5,8 +5,9 @@ import cv2 as cv
 import time
 
 
-bad_path="/home/pi/Desktop/Pi_Secure/bad_images/"
-Id=open("/home/pi/Desktop/Pi_Secure/dataset/ID.txt","r")
+
+bad_path="/home/pi/Desktop/Pi-Secure/bad_images/"
+Id=open("/home/pi/Desktop/Pi-Secure/dataset/ID.txt","r")
 Idlist=[]
 nameslist=[]
 recognizer=recognizer.recognizer("/home/pi/opencv-3.1.0/data/haarcascades/haarcascade_frontalface_default.xml")
@@ -41,7 +42,7 @@ def main_detection():
 				cv.imwrite(bad_path+curtime+".jpg",frame)
 				IDS="Unknown person"
 				notifier.sendmail()
-				notifier.instapush(curtime)
+				notifier.instapush(curtime,unkown=True)
 			for i in blackliste:
 				if IDS==i:
 					curtime=time.strftime("%d.%m.%Y%H:%M:%S")
@@ -53,7 +54,7 @@ def main_detection():
 				curtime=time.strftime("%d.%m.%Y%H:%M:%S")
 				cv.imwrite(bad_path+curtime+".jpg",frame)
 				notifier.instapush(inform=True, person=name)
-				notifier.sendmail(curtime,content="Your notification. A fired arrives")
+				notifier.sendmail(curtime,content="Your notification. A friend arrives")
 
 		except TypeError:
 			pass

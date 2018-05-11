@@ -3,12 +3,12 @@ import sys
 import pickle
 import socket
 import time
-mail_path="/home/pi/Desktop/Pi_Secure/mail/"
-picture_path="/home/pi/Desktop/Pi_Secure/pictures/"
-Video_path="/home/pi/Desktop/Pi_Secure/video/"
-key_path="/home/pi/Desktop/Pi_Secure/key/"
-main_path="/home/pi/Desktop/Pi_Secure/"
-datasets="/home/pi/Desktop/Pi_Secure/dataset/"
+mail_path="/home/pi/Desktop/Pi-Secure/mail/"
+picture_path="/home/pi/Desktop/Pi-Secure/pictures/"
+Video_path="/home/pi/Desktop/Pi-Secure/video/"
+key_path="/home/pi/Desktop/Pi-Secure/key/"
+main_path="/home/pi/Desktop/Pi-Secure/"
+datasets="/home/pi/Desktop/Pi-Secure/dataset/"
 host="192.168.178.62" #enter your IP here
 port=5002 #enter your port here
 s=socket.socket()
@@ -154,6 +154,11 @@ def get_data():
 				name=s.recv(1024).decode("utf-8")
 				f.write(name)
 			s.send(str.encode("ok"))
+		except Exception as e:
+			print("[!]: Error: "+str(e))
+			print("")
+			print("")
+			pass
 while True:
 	try:
 		os.chdir(main_path)

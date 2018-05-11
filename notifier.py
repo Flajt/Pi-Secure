@@ -1,6 +1,7 @@
 import os
 import smtplib
 from instapush import Instapush, App
+form pushetta import Pushetta
 from email import *
 from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
@@ -10,11 +11,11 @@ from email.mime.multipart import MIMEMultipart
 
 class notyfie():
 	def __init__(self):
-		self.sender=open("/home/pi/Desktop/Pi_Secure/mail/mail.txt","r")
+		self.sender=open("/home/pi/Desktop/Pi-Secure/mail/mail.txt","r")
 		self.sender=self.sender.readline()
 		#print(self.sender)
-		self.bad_path="/home/pi/Desktop/Pi_Secure/bad_images/"
-		self.id_path="/home/pi/Desktop/Pi_Secure/key/"
+		self.bad_path="/home/pi/Desktop/Pi-Secure/bad_images/"
+		self.id_path="/home/pi/Desktop/Pi-Secure/key/"
 
 
 
@@ -51,16 +52,22 @@ class notyfie():
 		mail.sendmail("pysecure1@gmail.com",self.sender,text)
 
 
-	def instapush(self, time,blacklisted=[False,None],inform=[False,None]):
-		"""Allow you to send an instapush message"""
+	def instapush(self, time,blacklisted=[False,None],inform=[False,None],unkown=False):
+		"""Allow you to send an instapush/pushetta messages
+		actually it's pushetta"""
 		ID=open(self.id_path+"Key.txt","r")
 		ID=ID.read()
 		Secret=open(self.id_path+"secret.txt","r")
 		Secret=Secret.read()
-		app = App(appid=ID,secret=Secret)
-		if blacklisted==False:
-			app.notify(event_name='Warning', trackers={ 'time': time})
+		p=Pushetta(ID)
+		#app = App(appid=ID,secret=Secret)
+		#if blacklisted==False:
+			#app.notify(event_name='Warning', trackers={ 'time': time})
+		if unknown==True:
+			p.pushMessage(secret,"An unknow person has been detected!")
 		elif blacklisted[0]==True:
-		elif whitlisted[0]==True:
-			app.notif(event_name="blacklist",tracker={"Name":blacklisted[1]})
-			app.notify(event_name="Inform_me",tracker{"Person":whitlisted[1]})
+			p.pushMessage(secret, str(blacklisted[1])+" has been detected. (He is on the Blacklist!)")
+			#app.notify(event_name="blacklist",tracker={"Name":blacklisted[1]})
+		elif inform[0]==True:
+			#app.notify(event_name="Inform_me",tracker{"Person":whitlisted[1]})
+			p.pushMessage(secret,str(whitlisted[1])+" has arived.")

@@ -2,7 +2,7 @@
 
 import os
 
-base_path="/home/pi/Desktop/Pi_Secure/"
+base_path="/home/pi/Desktop/Pi-Secure/"
 
 os.chdir(base_path)
 os.mkdir("data")
@@ -13,5 +13,6 @@ os.mkdir("pictures")
 os.mkdir("pos")
 os.mkdir("scripts")
 os.mkdir("mail")
-os.system("sudo pip3 install instapush")
+#os.system("sudo pip3 install instapush") currently instapush isn't working well so it won't be used
+os.system("sudo pip3 install pushetta")
 print("Please copy all scripts with .py or .sh in the scripts folder!"
