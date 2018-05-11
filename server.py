@@ -168,7 +168,7 @@ while True:
 	except(Exception):
 		os.chdir("/home/pi/Desktop")
 		os.mkdir("Pi_Secure")
-		os.chdir("/home/pi/Desktop/Pi_Secure/")
+		os.chdir("/home/pi/Desktop/Pi-Secure/")
 		l=open("ok.txt","w")
 		l.write("1")
 		l.close()

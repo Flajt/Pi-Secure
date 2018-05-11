@@ -15,4 +15,4 @@ os.mkdir("scripts")
 os.mkdir("mail")
 #os.system("sudo pip3 install instapush") currently instapush isn't working well so it won't be used
 os.system("sudo pip3 install pushetta")
-print("Please copy all scripts with .py or .sh in the scripts folder!"
+print("Please copy all scripts with .py or .sh in the scripts folder!")
