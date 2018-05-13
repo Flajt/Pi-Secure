@@ -18,7 +18,7 @@ Improve the server_up.sh
 """
 print("Server is online at "+host+":"+str(port))
 os.chdir(main_path+"scripts")
-os.system("sudo ./handler.py")
+os.system("sudo python3 handler.py")
 
 def get_data():
 	global host
@@ -167,7 +167,7 @@ while True:
 			get_data()
 	except(Exception):
 		os.chdir("/home/pi/Desktop")
-		os.mkdir("Pi_Secure")
+		#os.mkdir("Pi-Secure") not usefull
 		os.chdir("/home/pi/Desktop/Pi-Secure/")
 		l=open("ok.txt","w")
 		l.write("1")

@@ -10,10 +10,10 @@ print("License: GNU General Public License, Version 3 ")
 print("##################################################")
 name=input("Enter the name of the person: ")#add that every picture in /pos will get named like the person
 number=input("Enter an ID number for that person: ")
-dire="/home/pi/Desktop/Pi_Secure/pos"
+dire="/home/pi/Desktop/Pi-Secure/pos"
 num=0
 faceCascade = cv.CascadeClassifier("/home/pi/opencv-3.1.0/data/haarcascades/haarcascade_frontalface_default.xml")
-File=open("/home/pi/Desktop/Pi_Secure/dataset/info.csv","w")
+File=open("/home/pi/Desktop/Pi-Secure/dataset/info.csv","w")
 os.chdir(dire)
 
 
@@ -36,7 +36,7 @@ for image in os.listdir(os.getcwd()):
     for (x,y,w,h) in faces:
         cv.rectangle(output, (x, y), (x+w, y+h), (0, 255, 0), 2)
         cropped=output[int(y):int(y)+int(h), int(x):int(x)+int(w)]
-        cv.imwrite("/home/pi/Desktop/Pi_Secure/data/"+number+"."+str(num)+".jpg",cropped)
+        cv.imwrite("/home/pi/Desktop/Pi-Secure/data/"+number+"."+str(num)+".jpg",cropped)
         num=num+1
     try:
         os.remove(image)
@@ -49,7 +49,7 @@ for image in os.listdir(os.getcwd()):
     time.sleep(0.5)
     cv.imshow("Note: This Programm is not 100%, correct!" ,output)
 
-os.chdir("/home/pi/Desktop/Pi_Secure/data")
+os.chdir("/home/pi/Desktop/Pi-Secure/data")
 for images in os.listdir(os.getcwd()):
     cur_dir=os.getcwd()
     text=str(cur_dir)+"/"+images+"\n"#+";"+str(direnum) #+" 1"+" "+str(x)+" "+str(y)+" "+str(w)+" "+str(h)+"\n" the seccond # is if you need the face coordinates                    print(text)
@@ -58,7 +58,7 @@ for images in os.listdir(os.getcwd()):
 
 
 
-ID=open("/home/pi/Desktop/Pi_Secure/dataset/ID.txt","a")
+ID=open("/home/pi/Desktop/Pi-Secure/dataset/ID.txt","a")
 ID.write(name+" "+number+"\n")
 ID.close()
 print("Done!")

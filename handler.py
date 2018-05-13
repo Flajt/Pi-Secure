@@ -12,28 +12,35 @@ Idlist=[]
 nameslist=[]
 recognizer=recognizer.recognizer("/home/pi/opencv-3.1.0/data/haarcascades/haarcascade_frontalface_default.xml")
 notifier=notifier.notyfie()
-try:
-	os.chdir("/home/pi/Desktop/Pi_Secure/")
-	with open("inform_me.txt","r") as f:
-		name=f.read()
-		f.close()
 
-except Exception as e:
-	setup()
+def setup():
+	for ids in Id:
+		spliter=ids.split(" ")
+		name=spliter[0]
+		ID=spliter[1].split("\n")
+		Idlist.append(ID[0])
+		nameslist.append(name)
+	main_detection()
+
+
+
 
 def main_detection():
-	os.chdir("/home/pi/Desktop/Pi_Secure/")
+	os.chdir("/home/pi/Desktop/Pi-Secure/")
 	blackliste=[]
 	persons=[]
-	blacklist=open("blacklist.txt","r")
-	for i in blacklist:
-		ID_in_black_list=i.split(" ")[1]#check if everything is ok
-		person=ID_in_black_list[0]
-		persons.append(person)
-		blacklist.apppend(ID_in_black_list)
+	try:
+		blacklist=open("blacklist.txt","r")
+		for i in blacklist:
+			ID_in_black_list=i.split(" ")[1]#check if everything is ok
+			person=ID_in_black_list[0]
+			persons.append(person)
+			blacklist.apppend(ID_in_black_list)
+	except Exception as e:
+		pass
 
 	while True:
-		IDS, person_found, conf, frame=recognizer.recognize(0)
+		IDS, person_found, conf, frame=recognizer.recognize("http://192.168.178.49:8080/video")
 		try:
 			if conf>=80.0:
 				#print(frame)
@@ -68,13 +75,13 @@ def main_detection():
 				name=nameslist[int(objects)-1]
 				print(name)
 
-def setup():
-	for ids in Id:
-		spliter=ids.split(" ")
-		name=spliter[0]
-		ID=spliter[1].split("\n")
-		Idlist.append(ID[0])
-		nameslist.append(name)
-	main_detection()
+try:
+	os.chdir("/home/pi/Desktop/Pi_Secure/")
+	with open("inform_me.txt","r") as f:
+		name=f.read()
+		f.close()
+
+except Exception as e:
+	setup()
 
 setup()

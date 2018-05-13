@@ -11,6 +11,10 @@ import cv2 as cv
 class ui():
     def __init__(self):
         global x
+        global host, port
+        global cascade_path
+        global path
+        global curdir
         usern=getpass.getuser()
         x=0
         password1=False
@@ -28,7 +32,7 @@ class ui():
         s=socket.socket()
         try:
             s.send(str.encode("inform"))
-            data=s.recv(1024)decode(1024)
+            data=s.recv(1024).decode(1024)
             if data=="ok":
                 print("Here are the people please choose a name:")
                 names=s.recv(1024).decode("utf-8")
@@ -37,7 +41,7 @@ class ui():
                 while check!=True:
                     name=input("Wich of them you want?:")
                     print("Is this the right one?: ", name)
-                    confirm=input("Y or N":)
+                    confirm=input("Y or N:")
                     if confirm=="Y":
                         check=True
                     else:
@@ -141,7 +145,7 @@ class ui():
             print("Every person how is not in the Dantabank will create an alarm message ")
             print("If you use it the first time the programm create a picture folder for all pictures.")
             print("If you want to add a picture put it in this folder and run Add picture command number")
-            print("Pleas don`t rename the images!")
+            print("Please don`t rename the images!")
             print("")
             print("-------------------------------------------------------------------")
             print("Delete picture")
@@ -404,6 +408,7 @@ class ui():
                 print
                 self.main()
         except Exception as e :
+            print("Error: ",e)
             print("")
             print("")
             self.main()
@@ -411,11 +416,11 @@ class ui():
 
 
     def create(self):                           #the funktion were the user add his information
-        global password1
-        global password2
         global hash
         global host
         global port
+        password1=None
+        password2=False
         Pass_ok=False   #add all important infos
         user=input("Create a Username: ")
         print("Welcome "+user)

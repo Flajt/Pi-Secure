@@ -10,7 +10,7 @@ class recognizer():
 	def recognize(self, cam):
 		conf=None
 		recognizer=cv.face.createLBPHFaceRecognizer()
-		recognizer.load("/home/pi/Desktop/Pi_Secure/dataset/dataset.yml")
+		recognizer.load("/home/pi/Desktop/Pi-Secure/dataset/dataset.yml")
 		video=cv.VideoCapture(cam)
 
 		while True:
