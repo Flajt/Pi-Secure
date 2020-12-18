@@ -1,5 +1,6 @@
 # Pi-Secure
 A python security system
+Currently not working.
 
 What is it:
 This project should allow you to setup your own home security-system for less money.
